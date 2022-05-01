@@ -33,7 +33,7 @@
     "announce_command": "涯涯通知",
     "can_add_ban": true,
     "can_forget": true,
-    "sentence_common": true,
-    "find_common": true,
-    "ban_common": true
+    "sentence_common": false,
+    "find_common": false,
+    "ban_common": false
 }
