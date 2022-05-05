@@ -427,7 +427,7 @@ async def on_ready():
     for channel in datas["announce_channels"]:
         await client.get_channel(channel).send(datas["start_word"])
     activity_w = discord.Activity(
-        type=discord.ActivityType.watching, name="玉聿拔拔好帥～")
+        type=discord.ActivityType.playing, name=datas["activity"])
     await client.change_presence(status=discord.Status.online, activity=activity_w)
 
 
