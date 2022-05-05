@@ -436,7 +436,6 @@ async def on_message(message):
 
     if message.author == client.user:
         return
-    print("{} say : {}".format(message.author.name, message.content))
 
     #cont = False
     sents = message.content.split(datas["split"])
