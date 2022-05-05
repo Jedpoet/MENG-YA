@@ -293,7 +293,7 @@ async def set_administrator(message, sents):
         datas["master_id"].append(message.author.id)
         await message.channel.send(datas["set_administrator"].format(message.author.name))
         for channel in datas["system_channels"]:
-            await client.get_channel(channel).send(datas["set_system_channel"]).format(message.author.name)
+            await client.get_channel(channel).send(datas["set_administrator"].format(message.author.name))
         with open("datas/datas.json", 'w', encoding="utf-8") as f:
             json.dump(datas, f, ensure_ascii=False)
 
