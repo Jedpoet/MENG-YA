@@ -3,6 +3,7 @@ import random
 import json
 import time
 from googletrans import Translator
+import keep_alive
 
 client = discord.Client()
 translator = Translator()
@@ -465,5 +466,5 @@ async def on_message(message):
     if len(anss) != 0:
         await message.channel.send(random.choice(anss))
 
-
+keep_alive.keep_alive()
 client.run(datas["bot_token"])
