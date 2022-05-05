@@ -8,16 +8,16 @@ client = discord.Client()
 translator = Translator()
 
 # 開啟各種資料夾
-with open("datas\\sentence_library.json", encoding="utf-8") as f:
+with open("datas/sentence_library.json", encoding="utf-8") as f:
     lib = json.load(f)
 
-with open("datas\\datas.json", 'r', encoding="utf-8") as f:
+with open("datas/datas.json", 'r', encoding="utf-8") as f:
     datas = json.load(f)
 
-with open("datas\\ban_word.json", 'r', encoding="utf-8") as f:
+with open("datas/ban_word.json", 'r', encoding="utf-8") as f:
     ban_words = json.load(f)
 
-with open("datas\\find_library.json", 'r', encoding="utf-8") as f:
+with open("datas/find_library.json", 'r', encoding="utf-8") as f:
     findlib = json.load(f)
 
 # 功能函式區
@@ -32,7 +32,7 @@ async def learn(message, sents):
                 if i in sents[1]:
                     await message.channel.send(datas["ban_word"])
                     return
-    elif message.guild.name in datas["have_ban_word"]:
+    elif message.guild.name in ban_words.keys():
         for i in ban_words[message.guild.name]:
             if i in sents[1]:
                 await message.channel.send(datas["ban_word"])
@@ -69,7 +69,7 @@ async def learn(message, sents):
                     lib[sents[1]] = [
                         {"回答": sents[2+i], "時間":time.ctime(), "老師":message.author.name, "伺服器":message.guild.name}]
                 await message.channel.send(datas["learnt"].format(sents[2+i]))
-    with open("datas\\sentence_library.json", 'w', encoding="utf-8") as f:
+    with open("datas/sentence_library.json", 'w', encoding="utf-8") as f:
         json.dump(lib, f, ensure_ascii=False)
 
 # 忘記回答
@@ -91,7 +91,7 @@ async def forget(message, sents):
                             break
                     if cont and not sents[1] in findlib.keys():
                         await message.channel.send(datas["do_not_know"].format(sents[2+i]))
-                with open("datas\\sentence_library.json", 'w', encoding="utf-8") as f:
+                with open("datas/sentence_library.json", 'w', encoding="utf-8") as f:
                     json.dump(lib, f, ensure_ascii=False)
             if sents[1] in findlib.keys():
                 for i in range(len(sents)-2):
@@ -106,7 +106,7 @@ async def forget(message, sents):
                             break
                     if cont and not sents[1] in lib:
                         await message.channel.send(datas["do_not_know"].format(sents[2+i]))
-                with open("datas\\find_library.json", 'w', encoding="utf-8") as f:
+                with open("datas/find_library.json", 'w', encoding="utf-8") as f:
                     json.dump(findlib, f, ensure_ascii=False)
         else:
             await message.channel.send(datas["do_not_know"].format(sents[1]))
@@ -118,7 +118,7 @@ async def ban_word(message, sents):
     if message.author.id in datas["master_id"] or datas["can_add_ban"]:
         if not message.guild.name in ban_words.keys():
             ban_words[message.guild.name] = []
-            with open("datas\\datas.json", 'w', encoding="utf-8") as f:
+            with open("datas/datas.json", 'w', encoding="utf-8") as f:
                 json.dump(datas, f, ensure_ascii=False)
         for i in range(len(sents)-1):
             if sents[1+i] in ban_words[message.guild.name]:
@@ -126,7 +126,7 @@ async def ban_word(message, sents):
             else:
                 ban_words[message.guild.name].append(sents[1+i])
                 await message.channel.send(datas["learn_ban_word"].format(sents[1+i]))
-        with open("datas\\ban_word.json", 'w', encoding="utf-8") as f:
+        with open("datas/ban_word.json", 'w', encoding="utf-8") as f:
             json.dump(ban_words, f, ensure_ascii=False)
 
 # 解除禁字
@@ -147,7 +147,7 @@ async def lift_ban_word(message, sents):
                     await message.channel.send(datas["lift_ban_word"].format(sents[i+1]))
                     if len(ban_words[message.guild.name]) == 0:
                         del ban_words[message.guild.name]
-                    with open("datas\\ban_word.json", 'w', encoding="utf-8") as f:
+                    with open("datas/ban_word.json", 'w', encoding="utf-8") as f:
                         json.dump(ban_words, f, ensure_ascii=False)
                     break
 
@@ -194,7 +194,7 @@ async def find(message, sents):
                         {"回答": sents[2+i], "時間":time.ctime(), "老師":message.author.name, "伺服器":message.guild.name}]
                 await message.channel.send(datas["learnt"].format(sents[2+i]))
 
-    with open("datas\\find_library.json", 'w', encoding="utf-8") as f:
+    with open("datas/find_library.json", 'w', encoding="utf-8") as f:
         json.dump(findlib, f, ensure_ascii=False)
 
 # 抽籤
@@ -243,7 +243,7 @@ async def trans_to_en(message, sents):
 async def set_system_channel(message, sents):
     datas["system_channels"].append(message.channel.id)
     await message.channel.send(datas["set_system_channels_word"])
-    with open("datas\\datas.json", 'w', encoding="utf-8") as f:
+    with open("datas/datas.json", 'w', encoding="utf-8") as f:
         json.dump(datas, f, ensure_ascii=False)
 
 # 設定通知頻道
@@ -252,7 +252,7 @@ async def set_system_channel(message, sents):
 async def set_announce_channel(message, sents):
     datas["announce_channels"].append(message.channel.id)
     await message.channel.send(datas["set_announce_channels_word"])
-    with open("datas\\datas.json", 'w', encoding="utf-8") as f:
+    with open("datas/datas.json", 'w', encoding="utf-8") as f:
         json.dump(datas, f, ensure_ascii=False)
 
 # 廣域通知
@@ -274,7 +274,7 @@ async def help(message, sents):
         {} 新禁字1 新禁字2 
         {} 解除的禁字1 解除的禁字2
         {} 觸發詞（有包含就行） 回答1 回答2
-        {} 籤1 籤2 纖3 (抽籤
+        {} 籤1 籤2 籤3 (抽籤
         {} 要翻譯成中文的句子（日翻中目前有問題
         {} 要翻譯成日文的句子
         {} 要翻譯成英文的句子
@@ -293,13 +293,16 @@ async def set_administrator(message, sents):
         await message.channel.send(datas["set_administrator"].format(message.author.name))
         for channel in datas["system_channels"]:
             await client.get_channel(channel).send(datas["set_system_channel"]).format(message.author.name)
-        with open("datas\\datas.json", 'w', encoding="utf-8") as f:
+        with open("datas/datas.json", 'w', encoding="utf-8") as f:
             json.dump(datas, f, ensure_ascii=False)
 
 # 設定新指令/回答
 
 
 async def change_command(message, sents):
+    if not message.author.id in datas["master_id"]:
+        await message.channel.send(datas["permission_not_enough_word"])
+        return
     global funcs
     in_key = False
     for key in datas.keys():
@@ -309,7 +312,7 @@ async def change_command(message, sents):
     if not in_key:
         await message.channel.send(datas["no_command_word"])
         return
-    with open("datas\\datas.json", 'w', encoding="utf-8") as f:
+    with open("datas/datas.json", 'w', encoding="utf-8") as f:
         json.dump(datas, f, ensure_ascii=False)
     funcs[sents[2]] = funcs[sents[1]]
     del funcs[sents[1]]
@@ -321,50 +324,68 @@ async def change_command(message, sents):
 # 更改普通使用者的權限
 
 async def change_add_ban_permission(message, sents):
+    if not message.author.id in datas["master_id"]:
+        await message.channel.send(datas["permission_not_enough_word"])
+        return
     datas["can_add_ban"] = not datas["can_add_ban"]
     for channel in datas["system_channels"]:
         await client.get_channel(channel).send(datas["change_permission_word"].format(message.author.name, "can_add_ban", not datas["can_add_ban"], datas["can_add_ban"]))
-    with open("datas\\datas.json", 'w', encoding="utf-8") as f:
+    with open("datas/datas.json", 'w', encoding="utf-8") as f:
         json.dump(datas, f, ensure_ascii=False)
 
 
 async def change_forget_permission(message, sents):
+    if not message.author.id in datas["master_id"]:
+        await message.channel.send(datas["permission_not_enough_word"])
+        return
     datas["can_forget"] = not datas["can_forget"]
     for channel in datas["system_channels"]:
         await client.get_channel(channel).send(datas["change_permission_word"].format(message.author.name, "can_forget", not datas["can_forget"], datas["can_forget"]))
-    with open("datas\\datas.json", 'w', encoding="utf-8") as f:
+    with open("datas/datas.json", 'w', encoding="utf-8") as f:
         json.dump(datas, f, ensure_ascii=False)
 
 
 async def change_lift_ban_permission(message, sents):
+    if not message.author.id in datas["master_id"]:
+        await message.channel.send(datas["permission_not_enough_word"])
+        return
     datas["can_lift_ban"] = not datas["can_lift_ban"]
     for channel in datas["system_channels"]:
         await client.get_channel(channel).send(datas["change_permission_word"].format(message.author.name, "can_lift_ban", not datas["can_lift_ban"], datas["can_lift_ban"]))
-    with open("datas\\datas.json", 'w', encoding="utf-8") as f:
+    with open("datas/datas.json", 'w', encoding="utf-8") as f:
         json.dump(datas, f, ensure_ascii=False)
 
 
 async def change_sentence_common(message, sents):
+    if not message.author.id in datas["master_id"]:
+        await message.channel.send(datas["permission_not_enough_word"])
+        return
     datas["sentence_common"] = not datas["sentence_common"]
     for channel in datas["system_channels"]:
         await client.get_channel(channel).send(datas["change_permission_word"].format(message.author.name, "sentence_common", not datas["sentence_common"], datas["sentence_common"]))
-    with open("datas\\datas.json", 'w', encoding="utf-8") as f:
+    with open("datas/datas.json", 'w', encoding="utf-8") as f:
         json.dump(datas, f, ensure_ascii=False)
 
 
 async def change_find_common(message, sents):
+    if not message.author.id in datas["master_id"]:
+        await message.channel.send(datas["permission_not_enough_word"])
+        return
     datas["find_common"] = not datas["find_common"]
     for channel in datas["system_channels"]:
         await client.get_channel(channel).send(datas["change_permission_word"].format(message.author.name, "find_common", not datas["find_common"], datas["find_common"]))
-    with open("datas\\datas.json", 'w', encoding="utf-8") as f:
+    with open("datas/datas.json", 'w', encoding="utf-8") as f:
         json.dump(datas, f, ensure_ascii=False)
 
 
 async def change_ban_common(message, sents):
+    if not message.author.id in datas["master_id"]:
+        await message.channel.send(datas["permission_not_enough_word"])
+        return
     datas["ban_common"] = not datas["ban_common"]
     for channel in datas["system_channels"]:
         await client.get_channel(channel).send(datas["change_permission_word"].format(message.author.name, "ban_common", not datas["ban_common"], datas["ban_common"]))
-    with open("datas\\datas.json", 'w', encoding="utf-8") as f:
+    with open("datas/datas.json", 'w', encoding="utf-8") as f:
         json.dump(datas, f, ensure_ascii=False)
 
 
