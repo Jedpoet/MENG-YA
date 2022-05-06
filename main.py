@@ -260,6 +260,9 @@ async def set_announce_channel(message, sents):
 
 
 async def announce(message, sents):
+    if not message.author.id in datas["master_id"]:
+        await message.channel.send(datas["permission_not_enough_word"])
+        return
     for channel in datas["announce_channels"]:
         await client.get_channel(channel).send(' '.join(sents[1:]))
 
