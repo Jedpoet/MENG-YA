@@ -469,7 +469,7 @@ async def on_message(message):
         await message.channel.send(random.choice(anss))
 
 keep_alive.keep_alive()
-if datas["bot_id"] == "":
+if datas["bot_token"] == "":
     client.run(os.environ['token'])
 else:
-    client.run(datas["bot_id"])
+    client.run(datas["bot_token"])

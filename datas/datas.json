@@ -3,6 +3,7 @@
     "split": " ",
     "bot_id": "",
     "master_signal": "",
+    "activity": "",
     "master_id": [
     ],
     "set_administrator": "{}的權限設定成功",
