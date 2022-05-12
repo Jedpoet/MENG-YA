@@ -4,6 +4,7 @@ import json
 import time
 from googletrans import Translator
 import keep_alive
+import os
 
 client = discord.Client()
 translator = Translator()
@@ -260,9 +261,6 @@ async def set_announce_channel(message, sents):
 
 
 async def announce(message, sents):
-    if not message.author.id in datas["master_id"]:
-        await message.channel.send(datas["permission_not_enough_word"])
-        return
     for channel in datas["announce_channels"]:
         await client.get_channel(channel).send(' '.join(sents[1:]))
 
@@ -292,6 +290,8 @@ async def help(message, sents):
 # 設定管理員權限
 
 async def set_administrator(message, sents):
+    if datas["master_signal"] == "" :
+        return
     if not message.author.id in datas["master_id"]:
         datas["master_id"].append(message.author.id)
         await message.channel.send(datas["set_administrator"].format(message.author.name))
@@ -469,4 +469,7 @@ async def on_message(message):
         await message.channel.send(random.choice(anss))
 
 keep_alive.keep_alive()
-client.run(datas["bot_token"])
+if datas["bot_id"] == "":
+    client.run(os.environ['token'])
+else:
+    client.run(datas["bot_id"])
