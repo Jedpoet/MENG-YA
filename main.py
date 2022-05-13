@@ -183,7 +183,7 @@ async def find(message, sents):
             cont = True
             if sents[1] in findlib.keys():
                 for j in range(len(findlib[sents[1]])):
-                    if findlib[sents[1]][j]["回答"] == sents[2+i]:
+                    if findlib[sents[1]][j]["回答"] == sents[2+i] and findlib[sents[1]][j]["伺服器"] == message.guild.name:
                         await message.channel.send(datas["have_learnt"])
                         cont = False
                         break
@@ -210,12 +210,12 @@ async def draw(message, sents):
 
 async def search(message, sents):
     if sents[1] in lib:
-        if datas["learn_common"]:
+        if datas["sentence_common"]:
             for key in lib[sents[1]]:
                 await message.channel.send("回答：{}; 時間：{}; 老師：{}; 伺服器：{}".format(key["回答"], key["時間"], key["老師"], key["伺服器"]))
         else:
             for key in lib[sents[1]]:
-                if key["伺服器"] == message.guild.name():
+                if key["伺服器"] == message.guild.name:
                     await message.channel.send("回答：{}; 時間：{}; 老師：{}".format(key["回答"], key["時間"], key["老師"]))
     else:
         await message.channel.send(datas["do_not_know"].format(sents[1]))
@@ -277,7 +277,7 @@ async def help(message, sents):
         {} 解除的禁字1 解除的禁字2
         {} 觸發詞（有包含就行） 回答1 回答2
         {} 籤1 籤2 籤3 (抽籤
-        {} 要翻譯成中文的句子（日翻中目前有問題
+        {} 要翻譯成中文的句子（翻譯目前都有問題
         {} 要翻譯成日文的句子
         {} 要翻譯成英文的句子
         {} 察看目前有的指令
